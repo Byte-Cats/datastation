@@ -1,17 +1,27 @@
 package main
 
 import (
-	"datastation/applogic"
+	app "datastation/pkg/app"
+	"datastation/pkg/mysql"
 	"fmt"
 
+	"github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
 	// Putting this here for now to hold the mysql driver dependency in go.mod
-	mysql := applogic.DatabaseMySql()
-	conn := applogic.ConnectToDatabase(mysql)
-	applogic.CheckConnectionToDatabase(conn)
-	applogic.CloseConnectionToDatabase(conn)
+	Mysql := mysql.DatabaseMySql()
+	conn := mysql.ConnectToMysql(Mysql)
+	app.CheckConnectionToDatabase(conn)
+	app.CloseConnectionToDatabase(conn)
 	fmt.Println(conn)
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+
+	pong, err := client.Ping().Result()
+	fmt.Println(pong, err)
 }

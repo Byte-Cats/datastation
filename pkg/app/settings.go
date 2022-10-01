@@ -1,4 +1,4 @@
-package applogic
+package pkg
 
 import (
 	"fmt"
