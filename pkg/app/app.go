@@ -1,8 +1,10 @@
-package applogic
+package pkg
 
 import (
 	"database/sql"
 	"fmt"
+	"log"
+	"time"
 )
 
 // Function that sets up all settings to database
@@ -12,12 +14,26 @@ func DatabaseMySql() *DB_Settings {
 	return database
 }
 
+// Function to retry connection to database if it fails
+func RetryConnection(databaseType string, databaseURL string) (error, *sql.DB) {
+	connection, err := sql.Open(databaseType, databaseURL)
+	return err, connection
+}
+
 // Function that connects to database using based url
-func ConnectToDatabase(database *DB_Settings) *sql.DB {
-	databaseUrl := database.User + database.Password + "@(" + database.Hostname + ")/" + database.Name + "?parserTime=true"
-	connection, err := sql.Open(database.Type, databaseUrl)
+func ConnectToDatabase(databaseType string, databaseURL string) *sql.DB {
+	connection, err := sql.Open(databaseType, databaseURL)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
+		for i := 0; i < 5; i++ {
+			log.Printf("Retrying connection to database for the %v time", i)
+			err, connection = RetryConnection(databaseType, databaseURL)
+			if err == nil {
+				break
+			}
+			time.Sleep(5 * time.Second)
+		}
+
 	}
 	return connection
 }
@@ -27,7 +43,7 @@ func CheckConnectionToDatabase(connection *sql.DB) {
 	// Will change it to PingContext() in future
 	err := connection.Ping()
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
 }
 
