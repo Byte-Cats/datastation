@@ -1,10 +1,15 @@
 package pkg
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"time"
+)
+
+var (
+	ctx context.Context
 )
 
 // Function that sets up all settings to database
@@ -40,11 +45,14 @@ func ConnectToDatabase(databaseType string, databaseURL string) *sql.DB {
 
 // Function that checks if the connection to database is set
 func CheckConnectionToDatabase(connection *sql.DB) {
-	// Will change it to PingContext() in future
-	err := connection.Ping()
+	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
+	defer cancel()
+	status := "up"
+	err := connection.PingContext(ctx)
 	if err != nil {
-		log.Println(err)
+		status = "down"
 	}
+	log.Printf("Database connection is %s\n %v", status, err)
 }
 
 // Function that closes existing connection to database

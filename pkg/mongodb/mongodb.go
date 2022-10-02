@@ -14,7 +14,7 @@ func DatabaseMongoDB() *app.DB_Settings {
 
 // Function to connect to mongoDB database with provided settings
 func ConnectToMongoDB(mongodb *app.DB_Settings) *sql.DB {
-	mongodbURL := mongodb.User + mongodb.Password + "@(" + mongodb.Hostname + ")/" + mongodb.Name + "?parseTime=true"
-	conn := app.ConnectToDatabase(mongodb.Type, mongodbURL)
+	mongodbDSN := mongodb.User + mongodb.Password + "@(" + mongodb.Hostname + ")/" + mongodb.Name + "?parseTime=true"
+	conn := app.ConnectToDatabase(mongodb.Type, mongodbDSN)
 	return conn
 }
