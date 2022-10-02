@@ -11,8 +11,10 @@ import (
 
 func main() {
 	// Putting this here for now to hold the mysql driver dependency in go.mod
-	Mysql := mysql.DatabaseMySql()
-	conn := mysql.ConnectToMysql(Mysql)
+	mysqly := mysql.DatabaseMySql()
+	conn := mysql.ConnectToMysql(mysqly)
+	mysqlconn := mysql.NewMysqly(conn)
+	mysqlconn.AddToMySqlTable("NewTable")
 	app.CheckConnectionToDatabase(conn)
 	app.CloseConnectionToDatabase(conn)
 	fmt.Println(conn)

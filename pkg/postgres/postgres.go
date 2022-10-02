@@ -14,7 +14,7 @@ func DatabasePostgres() *app.DB_Settings {
 
 // Function to connect to Postgres database with provided settings
 func ConnectToPostgres(postgres *app.DB_Settings) *sql.DB {
-	postgresURL := postgres.Type + "://" + postgres.User + ":" + postgres.Password + "@" + postgres.Hostname + "/" + postgres.Name + "?sslmode=disable"
-	conn := app.ConnectToDatabase(postgres.Type, postgresURL)
+	postgresDSN := postgres.Type + "://" + postgres.User + ":" + postgres.Password + "@" + postgres.Hostname + "/" + postgres.Name + "?sslmode=disable"
+	conn := app.ConnectToDatabase(postgres.Type, postgresDSN)
 	return conn
 }

@@ -1,8 +1,10 @@
 package pkg
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -11,6 +13,8 @@ import (
 type DB_Settings struct {
 	// Database's type
 	Type string
+	// Database's protocol
+	Protocol string
 	// Database's hostname
 	Hostname string
 	// Database's port
@@ -26,6 +30,7 @@ type DB_Settings struct {
 // Struct to store default database's settings
 type Template struct {
 	Type     string
+	Protocol string
 	Hostname string
 	Port     string
 	Name     string
@@ -39,6 +44,8 @@ func Default_Template() Template {
 	return Template{
 		// Defaul Database type
 		Type: "Dunno",
+		// Default Protocol
+		Protocol: "TCP",
 		// Default Hostname (There is no place like 127.0.0.1)
 		Hostname: "127.0.0.1",
 		// Default Port
@@ -57,6 +64,13 @@ func CheckType(database *DB_Settings, defaults string) {
 	database.Type = os.Getenv("DATABASE_TYPE")
 	if database.Type == "" {
 		database.Type = defaults
+	}
+}
+
+func CheckProtocol(database *DB_Settings, defaults string) {
+	database.Protocol = os.Getenv("DATABASE_PROTOCOL")
+	if database.Protocol == "" {
+		database.Protocol = defaults
 	}
 }
 
@@ -103,6 +117,7 @@ func CheckPassword(database *DB_Settings, defaults string) {
 // Function that contains all CheckFunctions and invokes full check
 func CheckDBSettings(database *DB_Settings) {
 	CheckType(database, Default_Template().Type)
+	CheckProtocol(database, Default_Template().Protocol)
 	CheckHostname(database, Default_Template().Hostname)
 	CheckPort(database, Default_Template().Port)
 	CheckName(database, Default_Template().Name)
@@ -123,6 +138,21 @@ func GetDatabaseType(database *DB_Settings) string {
 // Function that prints database's type value
 func ShowDatabaseType(database *DB_Settings) {
 	fmt.Println(database.Type)
+}
+
+// Function that sets database's protocol value
+func (database *DB_Settings) SetDatabaseProtocol(dprotocol string) {
+	database.Protocol = dprotocol
+}
+
+// Functions that returns database's protocol value
+func GetDatabaseProtocol(database *DB_Settings) string {
+	return database.Protocol
+}
+
+// Function that prints database's protocol value
+func ShowDatabaseProtocol(database *DB_Settings) {
+	fmt.Println(database.Protocol)
 }
 
 // Function that sets database's hostname value
@@ -198,4 +228,13 @@ func GetDatabasePassword(database *DB_Settings) string {
 // Function that prints database's password value
 func ShowDatabasePassword(database *DB_Settings) {
 	fmt.Println(database.Password)
+}
+
+// Set database's connection settings
+func SetConnectionSettings(database *sql.DB) *sql.DB {
+	database.SetConnMaxLifetime(time.Minute * 3)
+	database.SetConnMaxIdleTime(time.Minute * 2)
+	database.SetMaxOpenConns(12)
+	database.SetMaxIdleConns(8)
+	return database
 }

@@ -6,3 +6,4 @@ A Simple to use Go library for all databases
 - [ ] MySql
 - [ ] Postgress
 - [ ] MongoDB
+- [ ] Redis
