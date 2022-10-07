@@ -1,2 +1,12 @@
-  mongo mongo mongo
-  
+version: '3.3'
+
+services:
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - {{DB_PORT}}:{{DB_PORT}}
+    volumes:
+      - ~/apps/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME= {{DB_ROOT_USERNAME}}
+      - MONGO_INITDB_ROOT_PASSWORD= {{DB_ROOT_PASSWORD}}
