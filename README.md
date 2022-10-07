@@ -8,7 +8,7 @@ Solving most databases and making it into one go object that is all "`Heavily Co
 
 A Simple to use Go library for most database types
 
-![Datastation](http://img13.deviantart.net/4a1d/i/2012/304/4/0/data_core_by_ianllanas-d5jlfve.jpg)
+![Datastation](https://imgs.search.brave.com/PIZx27xhNuuVMExJCJ1pgECfyxgOzxFhJve_EXhaDE8/rs:fit:844:225:1/g:ce/aHR0cHM6Ly90c2U0/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC51/bTlBcHJHWEMxdzFx/QUhZM3Njanp3SGFF/SyZwaWQ9QXBp)
 
 
 ### Features
