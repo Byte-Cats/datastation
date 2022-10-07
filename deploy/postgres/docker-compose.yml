@@ -1,1 +1,15 @@
-post malone
+version: '3.3'
+services:
+  postgredb:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER= ${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT):$(DB_PORT)
+    volumes: 
+      - db:/var/lib/postgresql/data
+volumes:
+  postgredb:
+    driver: local
