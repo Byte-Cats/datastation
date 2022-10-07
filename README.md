@@ -8,6 +8,6 @@ A Simple to use Go library for most database types
 ### Features
 
 - [x] MySql
-- [ ] Postgress
-- [ ] MongoDB
-- [ ] Redis
+- [x] Postgress
+- [x] MongoDB
+- [x] Redis
