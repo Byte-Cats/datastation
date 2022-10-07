@@ -4,7 +4,7 @@ services:
   mongodb:
     image: mongo:5.0
     ports:
-      - {{DB_PORT}}:{{DB_PORT}}
+      - '${DB_PORT}:${DB_PORT}'
     volumes:
       - ~/apps/mongo:/data/db
     environment:
