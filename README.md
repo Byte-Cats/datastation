@@ -2,7 +2,7 @@
 A Simple to use Go library for most database types
 
 ## Lower the coding time by:
-"solving most databases and making it into one go object that is all `Heavily Commented!! OH YEAH!`  "
+Solving most databases and making it into one go object that is all "`Heavily Commented!! OH YEAH!`"
 
 
 ### Features
