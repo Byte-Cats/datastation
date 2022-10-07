@@ -9,7 +9,7 @@ Solving most databases and making it into one go object that is all "`Heavily Co
 
 
 
-![Datastation](https://imgs.search.brave.com/PIZx27xhNuuVMExJCJ1pgECfyxgOzxFhJve_EXhaDE8/rs:fit:844:225:1/g:ce/aHR0cHM6Ly90c2U0/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC51/bTlBcHJHWEMxdzFx/QUhZM3Njanp3SGFF/SyZwaWQ9QXBp)
+![Datastation](https://i.pinimg.com/originals/38/12/4a/38124a95a3df1290fdc3f7939212ebe3.jpg)
 
 
 ### Features
