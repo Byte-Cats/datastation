@@ -2,7 +2,7 @@
 
 [![CodeQL](https://github.com/Byte-Cats/datastation/actions/workflows/codeql.yml/badge.svg)](https://github.com/Byte-Cats/datastation/actions/workflows/codeql.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/byte-cats/datastation#section-readme.svg)](https://pkg.go.dev/github.com/byte-cats/datastation#section-readme)
-[![Go Report Card](https://goreportcard.com/badge/github.com/elewis787/boa)](https://goreportcard.com/report/github.com/elewis787/boa)
+[![Go Report Card](https://goreportcard.com/badge/github.com/byte-cats/datastation)](https://goreportcard.com/report/github.com/byte-cats/datastation)
 
 
 ### A Simple to use Go library for most database types
