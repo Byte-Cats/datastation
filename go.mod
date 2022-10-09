@@ -1,4 +1,4 @@
-module datastation
+module github.com/byte-cats/datastation
 
 go 1.19
 
