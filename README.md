@@ -8,7 +8,7 @@
 ## Lower your coding time by:
 - Having most database connectors ready to IGNITE from one go object
 - Have "`Heavily in-line Commented Code!! OH YEAH!`"
-- Have SUPER EASY TLDR type READMES EVERYWHERE!
+- Have SUPER EASY TLDR type README'S EVERYWHERE!
 
 
 
