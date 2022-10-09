@@ -5,8 +5,10 @@
 ### A Simple to use Go library for most database types
 ![Datastation](https://i.pinimg.com/originals/38/12/4a/38124a95a3df1290fdc3f7939212ebe3.jpg)
 
-## Lower the coding time by:
-Solving most databases and making it into one go object that is all "`Heavily Commented!! OH YEAH!`"
+## Lower your coding time by:
+- Having most database connectors ready to IGNITE from one go object
+- Have "`Heavily in-line Commented Code!! OH YEAH!`"
+- Have SUPER EASY TLDR type READMES EVERYWHERE!
 
 
 
