@@ -32,8 +32,7 @@ Edit the env files located in `datastation/deploy/{database_name}`
 
 ## Build the container
 
-*Note: some of these steps take >>1hr to complete depending on the speed of your internet connection, particularly 
-compiling SeqRepo*
+*Note: some of these steps take >>1hr to complete depending on the speed of your internet connection*
 
 - Pull images
 
