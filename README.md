@@ -1,3 +1,5 @@
+<div align="center">
+
 # Datastation
 
 [![CodeQL](https://github.com/Byte-Cats/datastation/actions/workflows/codeql.yml/badge.svg)](https://github.com/Byte-Cats/datastation/actions/workflows/codeql.yml)
@@ -39,3 +41,4 @@ Table of contents
 
    * [Docker](docs/docker.md)
 
+<div/>
