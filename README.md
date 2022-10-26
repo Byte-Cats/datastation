@@ -10,17 +10,13 @@
 ### A Simple Go library for most database types
 ![Datastation](https://i.pinimg.com/originals/38/12/4a/38124a95a3df1290fdc3f7939212ebe3.jpg)
   
+<div/>
   
-  <div/>
-  
-  
-
+<div align="left">    
   
 ## Lower your coding time by:
   
 
-  
-  <div align="left">  
     
 - Having most database connectors ready to IGNITE from one go object
 - Have "`Heavily in-line Commented Code!! OH YEAH!`"
