@@ -42,6 +42,31 @@ func DefaultPostgres() ConnectionConfig {
 	}
 }
 
+func DefaultMongoDB() ConnectionConfig {
+	return ConnectionConfig{
+		Type:     "mongodb",
+		Protocol: "tcp",
+		Hostname: "localhost",
+		Port:     "27017",
+		Name:     "mydb",
+		Username: "user",
+		Password: "password",
+	}
+}
+
+func DefaultRedis() ConnectionConfig {
+	return ConnectionConfig{
+		Type:     "redis",
+		Protocol: "tcp",
+		Hostname: "localhost",
+		Port:     "6379",
+		Name:     "",
+		Username: "",
+		Password: "",
+	}
+}
+
+
 // CheckType checks if the Type field in the given ConnectionConfig is set from the DATABASE_TYPE environment variable.
 // If it is not set, it sets it to the given default value.
 func CheckType(database *ConnectionConfig, defaults string) {
