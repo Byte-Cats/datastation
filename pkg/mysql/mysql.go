@@ -11,10 +11,9 @@ type MySQLHandler struct {
 	conn *sql.DB
 }
 
-
 func NewMySQLHandler(conn *sql.DB) MySQLHandler {
 	return MySQLHandler{
-				conn: conn,
+		conn: conn,
 	}
 }
 
