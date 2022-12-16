@@ -2,11 +2,11 @@ version: '3.3'
 
 services:
   mongodb:
-    image: mongo:5.0
+    image: mongo:${MONGO_VERSION}
     ports:
-      - '${DB_PORT}:${DB_PORT}'
+      - ${DB_PORT}:${DB_PORT}
     volumes:
-      - ~/apps/mongo:/data/db
+      - ${MONGO_VOLUME}:/data/db
     environment:
-      - MONGO_INITDB_ROOT_USERNAME= ${DB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD= ${DB_ROOT_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=${DB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
