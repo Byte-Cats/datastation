@@ -1,6 +1,6 @@
 <div align="center">
 
-# Datastation [WIP]
+# Datastation
 
 [![CodeQL](https://github.com/Byte-Cats/datastation/actions/workflows/codeql.yml/badge.svg)](https://github.com/Byte-Cats/datastation/actions/workflows/codeql.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/byte-cats/datastation#section-readme.svg)](https://pkg.go.dev/github.com/byte-cats/datastation#section-readme)
