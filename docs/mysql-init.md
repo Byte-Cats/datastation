@@ -11,7 +11,6 @@ Here is an example of how you can use the provided functions to:
 | Establish connection and execute func | if err := ConnectAndExecute(config, tableName, s, f); err != nil {<br>&emsp;log.Fatal(err)<br>}                                                                              |
 
 
-
  Please note that these revised function names and descriptions are just examples and may not necessarily match the actual functions being used in your code.
 
 ### further illustrating the steps to use this package
