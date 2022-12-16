@@ -29,7 +29,7 @@ or to default values if they are not.
 | `SetUser`         | `User`                        |
 
 allow you to set the corresponding fields 
-in a DB_Settings struct directly. 
+in a `DB_Settings` struct directly. 
 
 ### The Connect function 
 takes a DB_Settings struct and uses it to create a connection 
