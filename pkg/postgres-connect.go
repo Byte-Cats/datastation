@@ -6,7 +6,7 @@ import (
 )
 
 // PostgresString returns a connection string for a Postgres database.
-func PostgresString(config ConnectionConfig) string {
+func PostgresString(config DatabaseConfig) string {
 	return fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		config.Hostname, config.Port, config.Username, config.Password, config.Name)
 }
@@ -22,7 +22,7 @@ func PingPostgres(db *sql.DB) error {
 }
 
 // SetupPostgres sets up a connection to a Postgres database using the provided configuration.
-func SetupPostgres(config ConnectionConfig) (*sql.DB, error) {
+func SetupPostgres(config DatabaseConfig) (*sql.DB, error) {
 	connString := PostgresString(config)
 	db, err := OpenPostgres(connString)
 	if err != nil {

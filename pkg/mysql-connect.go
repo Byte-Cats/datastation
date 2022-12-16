@@ -5,33 +5,9 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"time"
+
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-// MySqlDBConfig is a struct that contains the configuration for the database connection.
-type MySqlDBConfig struct {
-	Info            *ConnectionConfig
-	DBName          string
-	Timeout         time.Duration
-	MaxIdleConns    int
-	MaxOpenConns    int
-	ConnMaxLifetime time.Duration
-	ConnMaxIdleTime time.Duration
-}
-
-// DefaultMySqlConf returns a struct with default values for the fields.
-func DefaultMySqlConf() *MySqlDBConfig {
-	newInfo := DefaultMySql()
-	return &MySqlDBConfig{
-		Info:            &newInfo,
-		DBName:          "database",
-		Timeout:         5 * time.Second,
-		MaxIdleConns:    2,
-		MaxOpenConns:    10,
-		ConnMaxLifetime: 30 * time.Minute,
-		ConnMaxIdleTime: 10 * time.Minute,
-	}
-}
 
 // WithDBConnection establishes a connection to the database, creates the specified table if it doesn't exist,
 // and then closes the connection when the provided function is finished executing.
@@ -40,7 +16,7 @@ func WithDBConnection(config *MySqlDBConfig, tableName string, s interface{}, f 
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+	defer CloseMySQL(db)
 
 	if err := CreateMySqlTable(db, tableName, s); err != nil {
 		return err
@@ -54,7 +30,7 @@ func NewDBConnection(config *MySqlDBConfig) (*sql.DB, error) {
 	// Build the connection string
 	dsn := MySqlString(config)
 
-	db, err := MySqlConn(config.Info.Type, dsn)
+	db, err := MySqlConn(config.DatabaseConfig.Type, dsn)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +56,7 @@ func ApplyConfig(db *sql.DB, config *MySqlDBConfig) {
 // MySqlString builds connection string for connecting to a MySQL database using the provided ConnectionConfig.
 func MySqlString(config *MySqlDBConfig) string {
 	// Build the base connection string
-	connString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", config.Info.Username, config.Info.Password, config.Info.Hostname, config.Info.Port, config.DBName)
+	connString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", config.DatabaseConfig.Username, config.DatabaseConfig.Password, config.DatabaseConfig.Hostname, config.DatabaseConfig.Port, config.DBName)
 	// Build the query parameters
 	queryParams := fmt.Sprintf("timeout=%s&maxIdleConns=%d&maxOpenConns=%d&connMaxLifetime=%s&connMaxIdleTime=%s",
 		config.Timeout, config.MaxIdleConns, config.MaxOpenConns, config.ConnMaxLifetime, config.ConnMaxIdleTime)
@@ -224,4 +200,24 @@ func CreateMySqlTable(db *sql.DB, tableName string, s interface{}) error {
 	// Execute the query
 	_, err := db.Exec(query)
 	return err
+}
+
+func CloseMySQL(db *sql.DB) {
+	// Close the database connection.
+	err := db.Close()
+	if err != nil {
+		fmt.Println("Error closing MySQL connection:", err)
+	}
+}
+
+// MongoDBOptions creates a *options.ClientOptions struct using a MongoDBConfig struct.
+func MongoDBOptions(config MongoDBConfig) *options.ClientOptions {
+	opts := options.Client().ApplyURI(config.URI)
+	if config.Username != "" || config.Password != "" {
+		opts.SetAuth(options.Credential{
+			Username: config.Username,
+			Password: config.Password,
+		})
+	}
+	return opts
 }

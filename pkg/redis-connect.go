@@ -2,34 +2,6 @@ package pkg
 
 import "github.com/go-redis/redis"
 
-// RedisConfig holds the configuration for a Redis connection.
-type RedisConfig struct {
-	Address  string
-	DB       int
-	Password string
-	PoolSize int
-}
-
-// DefaultRedisConfig returns a default configuration for a Redis connection.
-func DefaultRedisConfig() RedisConfig {
-	return RedisConfig{
-		Address:  "localhost:6379",
-		DB:       0,
-		Password: "",
-		PoolSize: 10,
-	}
-}
-
-// RedisOptions creates a *redis.Options struct using a RedisConfig struct.
-func RedisOptions(config RedisConfig) *redis.Options {
-	return &redis.Options{
-		Addr:     config.Address,
-		DB:       config.DB,
-		Password: config.Password,
-		PoolSize: config.PoolSize,
-	}
-}
-
 // NewRedisClient creates a new Redis client using the provided configuration.
 func NewRedisClient(config RedisConfig) *redis.Client {
 	return redis.NewClient(RedisOptions(config))

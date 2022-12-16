@@ -5,26 +5,7 @@ import (
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
-
-// MongoDBConfig holds the configuration for a MongoDB connection.
-type MongoDBConfig struct {
-	URI      string
-	Database string
-	Username string
-	Password string
-}
-
-// DefaultMongoDBConfig returns a default configuration for a MongoDB connection.
-func DefaultMongoDBConfig() MongoDBConfig {
-	return MongoDBConfig{
-		URI:      "mongodb://localhost:27017",
-		Database: "test",
-		Username: "",
-		Password: "",
-	}
-}
 
 // ConnectMongoDB establishes a connection to a MongoDB server.
 func ConnectMongoDB(config MongoDBConfig) (*mongo.Client, error) {
@@ -58,16 +39,4 @@ func MongoDBPing(client *mongo.Client) error {
 	defer cancel()
 
 	return client.Ping(ctx, nil)
-}
-
-// MongoDBOptions creates a *options.ClientOptions struct using a MongoDBConfig struct.
-func MongoDBOptions(config MongoDBConfig) *options.ClientOptions {
-	opts := options.Client().ApplyURI(config.URI)
-	if config.Username != "" || config.Password != "" {
-		opts.SetAuth(options.Credential{
-			Username: config.Username,
-			Password: config.Password,
-		})
-	}
-	return opts
 }
