@@ -1,11 +1,11 @@
 version: '3.3'
 services:
   redisdb:
-    image: redis:6.2-alpine
+    image: redis:${REDIS_VERSION}-alpine
     restart: always
     ports:
-      - '${DB_PORT}:${DB_PORT}'
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+      - ${DB_PORT}:${DB_PORT}
+    command: redis-server --save ${REDIS_SAVE_FREQUENCY} ${REDIS_SAVE_THRESHOLD} --loglevel warning --requirepass ${REDIS_PASSWORD}
     volumes: 
       - cache:/data
 volumes:
