@@ -7,14 +7,14 @@ import (
 
 // WithDBConnection establishes a connection to the database, creates the specified table if it doesn't exist,
 // and then closes the connection when the provided function is finished executing.
-func WithDBConnection(config ConnectionConfig, tableName string, s interface{}, f func(*sql.DB) error) error {
+func WithDBConnection(config *MySqlDBConfig, tableName string, s interface{}, f func(*sql.DB) error) error {
 	db, err := NewDBConnection(config)
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	if err := CreateTable(db, tableName, s); err != nil {
+	if err := CreateMySqlTable(db, tableName, s); err != nil {
 		return err
 	}
 
@@ -22,11 +22,11 @@ func WithDBConnection(config ConnectionConfig, tableName string, s interface{}, 
 }
 
 // NewDBConnection establishes a connection to the MySQL database specified in the provided ConnectionConfig.
-func NewDBConnection(config ConnectionConfig) (*sql.DB, error) {
+func NewDBConnection(config *MySqlDBConfig) (*sql.DB, error) {
 	// Build the connection string
-	dsn := BuildConnectionString(config)
+	dsn := MySqlString(config)
 
-	db, err := ConnectToDatabase(config.Type, dsn)
+	db, err := MySqlConn(config.Info.Type, dsn)
 	if err != nil {
 		return nil, err
 	}
@@ -35,24 +35,24 @@ func NewDBConnection(config ConnectionConfig) (*sql.DB, error) {
 	ApplyConfig(db, config)
 
 	// Test the connection
-	if err := PingDB(db); err != nil {
+	if err := MySqlPingDB(db); err != nil {
 		return nil, err
 	}
 	return db, nil
 }
 
 // ApplyConfig sets the connection pool settings for a *sql.DB instance using the provided ConnectionConfig.
-func ApplyConfig(db *sql.DB, config ConnectionConfig) {
+func ApplyConfig(db *sql.DB, config *MySqlDBConfig) {
 	db.SetMaxIdleConns(config.MaxIdleConns)
 	db.SetMaxOpenConns(config.MaxOpenConns)
 	db.SetConnMaxLifetime(config.ConnMaxLifetime)
 	db.SetConnMaxIdleTime(config.ConnMaxIdleTime)
 }
 
-// BuildConnectionString builds connection string for connecting to a MySQL database using the provided ConnectionConfig.
-func BuildConnectionString(config ConnectionConfig) string {
+// MySqlString builds connection string for connecting to a MySQL database using the provided ConnectionConfig.
+func MySqlString(config *MySqlDBConfig) string {
 	// Build the base connection string
-	connString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", config.Username, config.Password, config.Host, config.Port, config.Database)
+	connString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", config.Info.Username, config.Info.Password, config.Info.Hostname, config.Info.Port, config.DBName)
 	// Build the query parameters
 	queryParams := fmt.Sprintf("timeout=%s&maxIdleConns=%d&maxOpenConns=%d&connMaxLifetime=%s&connMaxIdleTime=%s",
 		config.Timeout, config.MaxIdleConns, config.MaxOpenConns, config.ConnMaxLifetime, config.ConnMaxIdleTime)
@@ -60,8 +60,8 @@ func BuildConnectionString(config ConnectionConfig) string {
 	return fmt.Sprintf("%s?%s", connString, queryParams)
 }
 
-// ConnectToDatabase establishes a connection to the database.
-func ConnectToDatabase(dbType string, dsn string) (*sql.DB, error) {
+// MySqlConn establishes a connection to the database.
+func MySqlConn(dbType string, dsn string) (*sql.DB, error) {
 	db, err := sql.Open(dbType, dsn)
 	if err != nil {
 		return nil, fmt.Errorf("error connecting to database: %w", err)
@@ -69,8 +69,8 @@ func ConnectToDatabase(dbType string, dsn string) (*sql.DB, error) {
 	return db, nil
 }
 
-// PingDB pings the database to check the connection.
-func PingDB(db *sql.DB) error {
+// MySqlPingDB pings the database to check the connection.
+func MySqlPingDB(db *sql.DB) error {
 	err := db.Ping()
 	if err != nil {
 		return fmt.Errorf("error pinging database: %w", err)

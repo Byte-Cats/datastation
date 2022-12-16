@@ -2,14 +2,10 @@
 defines a set of structs and functions for 
 working with database settings in a Go program.
 
-### The DB_Settings struct 
-stores the various settings for a database, 
-such as its type, `hostname`, and `port`. 
-
-### The Template struct 
+### The `ConectionConfig` struct 
 stores default values for these settings. 
 
-### The CheckDBSettings function
+### The `CheckDBSettings` function
 takes a pointer to a `DB_Settings` struct
 and calls a series of "check" functions on it, 
 which look at environment variables 

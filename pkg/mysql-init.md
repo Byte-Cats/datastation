@@ -2,7 +2,6 @@ Here is an example of how you can use the provided functions to:
 - Initialize a connection to a MySQL database
 - Execute a function with the connection:
 
-
 | Action                                | Code                                                                                                                                                                         |
 |---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Get default connection config         | config := GetDefaultConfig()                                                                                                                                                 |
@@ -10,6 +9,8 @@ Here is an example of how you can use the provided functions to:
 | Define table name and struct          | tableName := "mytable"<br>var s MyStruct                                                                                                                                     |
 | Define function to execute with conn  | f := func(conn *sql.DB) error {<br>&emsp;// Perform database ops using conn<br>&emsp;_, err := conn.Exec(...)<br>&emsp;if err != nil { return err }<br>&emsp;return nil<br>} |
 | Establish connection and execute func | if err := ConnectAndExecute(config, tableName, s, f); err != nil {<br>&emsp;log.Fatal(err)<br>}                                                                              |
+
+
 
  Please note that these revised function names and descriptions are just examples and may not necessarily match the actual functions being used in your code.
 

@@ -13,19 +13,31 @@ type ConnectionConfig struct {
 	Hostname string
 	Port     string
 	Name     string
-	User     string
+	Username string
 	Password string
 }
 
-// DefaultDataConfig returns a ConnectionConfig struct with default values for the fields.
-func DefaultDataConfig() ConnectionConfig {
+// DefaultMysql returns a ConnectionConfig struct with default values for the fields.
+func DefaultMySql() ConnectionConfig {
 	return ConnectionConfig{
 		Type:     "mysql",
 		Protocol: "tcp",
 		Hostname: "localhost",
 		Port:     "3306",
 		Name:     "database",
-		User:     "user",
+		Username: "user",
+		Password: "password",
+	}
+}
+
+func DefaultPostgres() ConnectionConfig {
+	return ConnectionConfig{
+		Type:     "postgres",
+		Protocol: "tcp",
+		Hostname: "localhost",
+		Port:     "5432",
+		Name:     "database",
+		Username: "user",
 		Password: "password",
 	}
 }
@@ -75,13 +87,13 @@ func CheckName(database *ConnectionConfig, defaults string) {
 	}
 }
 
-// CheckUser checks if the User field in the given
+// CheckUsername checks if the User field in the given
 // ConnectionConfig is set from the DATABASE_USER environment variable.
 // If it is not set, it sets it to the given default value.
-func CheckUser(database *ConnectionConfig, defaults string) {
-	database.User = os.Getenv("DATABASE_USER")
-	if database.User == "" {
-		database.User = defaults
+func CheckUsername(database *ConnectionConfig, defaults string) {
+	database.Username = os.Getenv("DATABASE_USER")
+	if database.Username == "" {
+		database.Username = defaults
 		return
 	}
 }
@@ -103,7 +115,7 @@ func CheckDatabase(database *ConnectionConfig, defaults ConnectionConfig) {
 	CheckHostname(database, defaults.Hostname)
 	CheckPort(database, defaults.Port)
 	CheckName(database, defaults.Name)
-	CheckUser(database, defaults.User)
+	CheckUsername(database, defaults.Username)
 	CheckPassword(database, defaults.Password)
 }
 

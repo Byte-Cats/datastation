@@ -83,8 +83,8 @@ func MapToStruct(m map[string]interface{}, s interface{}) error {
 	return nil
 }
 
-// CreateTable creates a new table in the database based on the provided struct.
-func CreateTable(db *sql.DB, tableName string, s interface{}) error {
+// CreateMySqlTable creates a new table in the database based on the provided struct.
+func CreateMySqlTable(db *sql.DB, tableName string, s interface{}) error {
 	// Get the type and value of the struct
 	val := reflect.ValueOf(s)
 	typ := reflect.TypeOf(s)
