@@ -1,64 +1,79 @@
 package pkg
 
 import (
-	"context"
 	"database/sql"
 	"fmt"
-	"log"
-	"time"
 )
 
-var (
-	ctx context.Context
-)
-
-// Function that sets up all settings to database
-func DatabaseMySql() *DB_Settings {
-	database := new(DB_Settings)
-	CheckDBSettings(database)
-	return database
-}
-
-// Function to retry connection to database if it fails
-func RetryConnection(databaseType string, databaseURL string) (error, *sql.DB) {
-	connection, err := sql.Open(databaseType, databaseURL)
-	return err, connection
-}
-
-// Function that connects to database using based url
-func ConnectToDatabase(databaseType string, databaseURL string) *sql.DB {
-	connection, err := sql.Open(databaseType, databaseURL)
+// WithDBConnection establishes a connection to the database, creates the specified table if it doesn't exist,
+// and then closes the connection when the provided function is finished executing.
+func WithDBConnection(config ConnectionConfig, tableName string, s interface{}, f func(*sql.DB) error) error {
+	db, err := NewDBConnection(config)
 	if err != nil {
-		log.Println(err)
-		for i := 0; i < 5; i++ {
-			log.Printf("Retrying connection to database for the %v time", i)
-			err, connection = RetryConnection(databaseType, databaseURL)
-			if err == nil {
-				break
-			}
-			time.Sleep(5 * time.Second)
-		}
-
+		return err
 	}
-	return connection
+	defer db.Close()
+
+	if err := CreateTable(db, tableName, s); err != nil {
+		return err
+	}
+
+	return f(db)
 }
 
-// Function that checks if the connection to database is set
-func CheckConnectionToDatabase(connection *sql.DB) {
-	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
-	defer cancel()
-	status := "up"
-	err := connection.PingContext(ctx)
+// NewDBConnection establishes a connection to the MySQL database specified in the provided ConnectionConfig.
+func NewDBConnection(config ConnectionConfig) (*sql.DB, error) {
+	// Build the connection string
+	dsn := BuildConnectionString(config)
+
+	db, err := ConnectToDatabase(config.Type, dsn)
 	if err != nil {
-		status = "down"
+		return nil, err
 	}
-	log.Printf("Database connection is %s\n %v", status, err)
+
+	// Set the connection options
+	ApplyConfig(db, config)
+
+	// Test the connection
+	if err := PingDB(db); err != nil {
+		return nil, err
+	}
+	return db, nil
 }
 
-// Function that closes existing connection to database
-func CloseConnectionToDatabase(connection *sql.DB) {
-	err := connection.Close()
+// ApplyConfig sets the connection pool settings for a *sql.DB instance using the provided ConnectionConfig.
+func ApplyConfig(db *sql.DB, config ConnectionConfig) {
+	db.SetMaxIdleConns(config.MaxIdleConns)
+	db.SetMaxOpenConns(config.MaxOpenConns)
+	db.SetConnMaxLifetime(config.ConnMaxLifetime)
+	db.SetConnMaxIdleTime(config.ConnMaxIdleTime)
+}
+
+// BuildConnectionString builds connection string for connecting to a MySQL database using the provided ConnectionConfig.
+func BuildConnectionString(config ConnectionConfig) string {
+	// Build the base connection string
+	connString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s", config.Username, config.Password, config.Host, config.Port, config.Database)
+	// Build the query parameters
+	queryParams := fmt.Sprintf("timeout=%s&maxIdleConns=%d&maxOpenConns=%d&connMaxLifetime=%s&connMaxIdleTime=%s",
+		config.Timeout, config.MaxIdleConns, config.MaxOpenConns, config.ConnMaxLifetime, config.ConnMaxIdleTime)
+	// Return the full connection string
+	return fmt.Sprintf("%s?%s", connString, queryParams)
+}
+
+// ConnectToDatabase establishes a connection to the database.
+func ConnectToDatabase(dbType string, dsn string) (*sql.DB, error) {
+	db, err := sql.Open(dbType, dsn)
 	if err != nil {
-		fmt.Println(err)
+		return nil, fmt.Errorf("error connecting to database: %w", err)
 	}
+	return db, nil
+}
+
+// PingDB pings the database to check the connection.
+func PingDB(db *sql.DB) error {
+	err := db.Ping()
+	if err != nil {
+		return fmt.Errorf("error pinging database: %w", err)
+	}
+	return nil
 }
