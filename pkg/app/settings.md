@@ -32,7 +32,7 @@ allow you to set the corresponding fields
 in a `DB_Settings` struct directly. 
 
 ### The Connect function 
-takes a DB_Settings struct and uses it to create a connection 
+takes a `DB_Settings` struct and uses it to create a connection 
 to a MySQL database using the `database/sql` package 
 and the github.com/go-sql-driver/mysql driver.
 
