@@ -47,6 +47,8 @@ Table of contents
 ### Documentation
 
    * [Docker](docs/docker.md)
+   * [MySql](docs/mysql-init.md)
+   * [Settings](docs/settings.md)
 
 
   </div>
